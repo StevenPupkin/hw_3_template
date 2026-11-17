@@ -15,4 +15,5 @@ curl localhost:8080/
 APP_PORT: по умолчанию - 8080 
 GREETING: по умолчанию - Hello, Docker
 
-
+Данные SQLite хранятся в докер volume counter-data (папка /data)
+и все данные сохраняются после docker "compose down"
