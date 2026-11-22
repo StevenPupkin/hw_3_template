@@ -29,6 +29,9 @@ stepan@Stepans-MacBook-Pro hw_3_template % curl -X POST localhost:8080/increment
 
 ## на 6 баллов
 
+Проверка этой задачи выполнена с SQLite. В (см compose-конфиг коммита 095b701 на гитхабе) 
+volume "counter-data" подключён к /data приложения. После "docker compose down" и "docker compose up -d" контейнер получил новый hostname, а значение счетчика сохранилось
+
 #### контейнер пересоздан, счетчик сохранен
 
 stepan@Stepans-MacBook-Pro hw_3_template % docker compose up -d
@@ -175,3 +178,14 @@ stepan@Stepans-MacBook-Pro hw_3_template % curl localhost:8080/
 
 После того как redis стал healthy, приложение без перезапуска (тот же hostname 2dd06ffab516) снова возвращает правильный счетчик
 
+(еще один комментарий)
+После еще одного запуска Redis запрос GET вернул сохраненное
+значение 7, а следующий "POST /increment" вернул 8. В обоих
+ответах hostname приложения был 5c805262588f (такой же, как до
+остановки Redis). Приложение восстановило доступ к счетчику без
+перезапуска.
+
+stepan@Stepans-MacBook-Pro hw_3_template % curl -fsS --retry 10 --retry-delay 1 --retry-connrefused --max-time 2 \
+  -w '\nHTTP %{http_code}\n' http://localhost:8080/readyz
+{"status": "ready", "storage": "redis"}
+HTTP 200
