@@ -4,11 +4,11 @@
 
 ## запуск
 
-```
+
 cp .env.example .env   #эту штуку можно менять
 docker compose up -d --build
 curl localhost:8080/
-```
+
 
 ## настройки .env
 
